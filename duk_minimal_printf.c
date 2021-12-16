@@ -92,7 +92,7 @@ static int duk__parse_pointer(const char *str, void **out) {
 	unsigned char ch;
 	int count;
 	int limit;
-	long val;  /* assume void * fits into long */
+	uintptr_t val;  /* assume void * fits into long */
 
 	/* We only need to parse what our minimal printf() produces, so that
 	 * we can check for a '0x' prefix, and assume all hex digits are
@@ -233,7 +233,7 @@ int duk_minimal_vsnprintf(char *str, size_t size, const char *format, va_list ap
 				v = va_arg(ap, void *);
 				DUK__WRITE_CHAR('0');
 				DUK__WRITE_CHAR('x');
-				off = duk__format_long(str, size, off, sizeof(void *) * 2, '0', 16, 0, (unsigned long) v);
+				off = duk__format_long(str, size, off, sizeof(void *) * 2, '0', 16, 0, (uintptr_t) v);
 				break;
 			} else {
 				/* Unrecognized, bail out early.  We could also emit the format
